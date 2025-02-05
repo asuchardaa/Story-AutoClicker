@@ -8,7 +8,7 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="ToolWindow"
-        Title="Storytelling Auto Clicker" Height="400" Width="450">
+        Title="Storytelling Auto Clicker" Height="320" Width="440">
     
     <Grid>
         <GroupBox Header="Click interval" HorizontalAlignment="Left" VerticalAlignment="Top" Width="420" Height="70" Margin="10,10,0,0">
@@ -33,33 +33,7 @@
                 <Label Grid.Column="7" Content="milliseconds" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
             </Grid>
         </GroupBox>
-
-        <GroupBox Header="Click options" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="90" Margin="10,90,0,0">
-            <Grid>
-                <Label Content="Mouse button:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,10,0,0"/>
-                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="100,10,0,0">
-                    <ComboBoxItem Content="Left" IsSelected="True"/>
-                    <ComboBoxItem Content="Right"/>
-                    <ComboBoxItem Content="Middle"/>
-                </ComboBox>
-                <Label Content="Click type:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,40,0,0"/>
-                <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="80" Margin="100,40,0,0">
-                    <ComboBoxItem Content="Single" IsSelected="True"/>
-                    <ComboBoxItem Content="Double"/>
-                </ComboBox>
-            </Grid>
-        </GroupBox>
-
-        <GroupBox Header="Click repeat" HorizontalAlignment="Left" VerticalAlignment="Top" Width="210" Height="90" Margin="220,90,0,0">
-            <Grid>
-                <RadioButton Content="Repeat" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
-                <TextBox Width="40" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="70,10,0,0" Text="1"/>
-                <Label Content="times" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="115,5,0,0"/>
-                <RadioButton Content="Repeat until stopped" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,0,0" IsChecked="True"/>
-            </Grid>
-        </GroupBox>
-
-        <GroupBox Header="Cursor position" HorizontalAlignment="Left" VerticalAlignment="Top" Width="420" Height="70" Margin="10,180,0,0">
+        <GroupBox Header="Cursor position" HorizontalAlignment="Left" VerticalAlignment="Top" Width="420" Height="70" Margin="10,90,0,0">
             <Grid>
                 <RadioButton Content="Current location" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,10,0,0" IsChecked="True"/>
                 <RadioButton Content="Pick location" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="200,10,0,0"/>
@@ -68,9 +42,9 @@
             </Grid>
         </GroupBox>
 
-        <Button Content="Start Left (F5)" x:Name="btnStartLeft" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="10,270,0,0"/>
-        <Button Content="Stop Left (F5)" x:Name="btnStopLeft" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="220,270,0,0"/>
-        <Button Content="Start Right (F6)" x:Name="btnStartRight" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="10,320,0,0"/>
-        <Button Content="Stop Right (F6)" x:Name="btnStopRight" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="220,320,0,0"/>
+        <Button Content="Start Left (F5)" x:Name="btnStartLeft" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="10,180,0,0"/>
+        <Button Content="Stop Left (F5)" x:Name="btnStopLeft" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="230,180,0,0"/>
+        <Button Content="Start Right (F6)" x:Name="btnStartRight" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="10,240,0,0"/>
+        <Button Content="Stop Right (F6)" x:Name="btnStopRight" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="230,240,0,0"/>
     </Grid>
 </Window>
