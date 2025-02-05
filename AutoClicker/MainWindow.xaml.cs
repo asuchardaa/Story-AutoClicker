@@ -76,6 +76,11 @@ namespace AutoClicker
             return IntPtr.Zero;
         }
 
+        private void BtnStartLeft_Click(object sender, RoutedEventArgs e) => StartLeftClicker();
+        private void BtnStopLeft_Click(object sender, RoutedEventArgs e) => StopLeftClicker();
+        private void BtnStartRight_Click(object sender, RoutedEventArgs e) => StartRightClicker();
+        private void BtnStopRight_Click(object sender, RoutedEventArgs e) => StopRightClicker();
+
         private void ToggleLeftClicker()
         {
             if (leftClickCts == null)
@@ -94,7 +99,7 @@ namespace AutoClicker
 
         private void StartLeftClicker()
         {
-            clickInterval = 100;
+            clickInterval = GetInterval();
             if (leftClickCts != null) return;
             leftClickCts = new CancellationTokenSource();
             Task.Run(() => AutoClick(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP, leftClickCts.Token));
@@ -112,7 +117,7 @@ namespace AutoClicker
 
         private void StartRightClicker()
         {
-            clickInterval = 100;
+            clickInterval = GetInterval();
             if (rightClickCts != null) return;
             rightClickCts = new CancellationTokenSource();
             Task.Run(() => AutoClick(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP, rightClickCts.Token));
@@ -140,6 +145,16 @@ namespace AutoClicker
                 }
             }
             catch (TaskCanceledException) { }
+        }
+
+        private int GetInterval()
+        {
+            int.TryParse(txtHours.Text, out int hours);
+            int.TryParse(txtMinutes.Text, out int minutes);
+            int.TryParse(txtSeconds.Text, out int seconds);
+            int.TryParse(txtMilliseconds.Text, out int milliseconds);
+
+            return (hours * 3600000) + (minutes * 60000) + (seconds * 1000) + milliseconds;
         }
     }
 }

@@ -4,47 +4,85 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoClicker"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Storytelling Auto Clicker"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"
-        WindowStyle="ToolWindow"
-        Title="Storytelling Auto Clicker" Height="320" Width="440">
-    
-    <Grid>
-        <GroupBox Header="Click interval" HorizontalAlignment="Left" VerticalAlignment="Top" Width="420" Height="70" Margin="10,10,0,0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="txtHours" Grid.Column="0" Width="40" Height="20" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Text="0"/>
-                <Label Grid.Column="1" Content="hours" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <TextBox x:Name="txtMinutes" Grid.Column="2" Width="40" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" Text="0"/>
-                <Label Grid.Column="3" Content="mins" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <TextBox x:Name="txtSeconds" Grid.Column="4" Width="40" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" Text="0"/>
-                <Label Grid.Column="5" Content="secs" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                <TextBox x:Name="txtMilliseconds" Grid.Column="6" Width="40" Height="20" HorizontalAlignment="Left" VerticalAlignment="Center" Text="100"/>
-                <Label Grid.Column="7" Content="milliseconds" Margin="0,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-            </Grid>
-        </GroupBox>
-        <GroupBox Header="Cursor position" HorizontalAlignment="Left" VerticalAlignment="Top" Width="420" Height="70" Margin="10,90,0,0">
-            <Grid>
-                <RadioButton Content="Current location" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,10,0,0" IsChecked="True"/>
-                <RadioButton Content="Pick location" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="200,10,0,0"/>
-                <TextBox Width="40" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,10,70,0" Text="X"/>
-                <TextBox Width="40" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,10,20,0" Text="Y"/>
-            </Grid>
+        Height="440"
+        Width="500"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Click Interval Section -->
+        <GroupBox Header="Click Interval" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <TextBox x:Name="txtHours" Width="50" Text="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <Label Content="h" VerticalAlignment="Bottom" Margin="5,0,20,0"/>
+
+                <TextBox x:Name="txtMinutes" Width="50" Text="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <Label Content="m" VerticalAlignment="Bottom" Margin="5,0,20,0"/>
+
+                <TextBox x:Name="txtSeconds" Width="50" Text="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <Label Content="s" VerticalAlignment="Bottom" Margin="5,0,20,0"/>
+
+                <TextBox x:Name="txtMilliseconds" Width="70" Text="100" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <Label Content="ms" VerticalAlignment="Bottom" Margin="5,0,20,0"/>
+            </StackPanel>
         </GroupBox>
 
-        <Button Content="Start Left (F5)" x:Name="btnStartLeft" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="10,180,0,0"/>
-        <Button Content="Stop Left (F5)" x:Name="btnStopLeft" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="230,180,0,0"/>
-        <Button Content="Start Right (F6)" x:Name="btnStartRight" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="10,240,0,0"/>
-        <Button Content="Stop Right (F6)" x:Name="btnStopRight" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="40" Margin="230,240,0,0"/>
+        <!-- Cursor Position Section -->
+        <GroupBox Header="Cursor Position" Grid.Row="1" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal" Margin="10">
+                <RadioButton Content="Current Location" IsChecked="True" Margin="10,0,10,0"/>
+                <RadioButton Content="Pick Location" Margin="20,0,10,0"/>
+                <TextBox Width="50" Text="X" Margin="5,0,10,0" IsReadOnly="True" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <TextBox Width="50" Text="Y" Margin="5,0,10,0" IsReadOnly="True" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Buttons Section -->
+        <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,10,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <Button Content="Start Left (F5)" x:Name="btnStartLeft"
+                        Width="180" Height="50"
+                        Margin="5"
+                        Style="{StaticResource MaterialDesignRaisedButton}" 
+                        Click="BtnStartLeft_Click"/>
+
+                <Button Content="Stop Left (F5)" x:Name="btnStopLeft"
+                        Width="180" Height="50"
+                        Margin="5"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Click="BtnStopLeft_Click"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Start Right (F6)" x:Name="btnStartRight"
+                        Width="180" Height="50"
+                        Margin="5"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Click="BtnStartRight_Click"/>
+
+                <Button Content="Stop Right (F6)" x:Name="btnStopRight"
+                        Width="180" Height="50"
+                        Margin="5"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Click="BtnStopRight_Click"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>
