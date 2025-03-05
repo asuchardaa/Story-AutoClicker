@@ -39,7 +39,8 @@
                 <TextBox x:Name="txtSeconds" Width="50" Text="0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
                 <Label Content="s" VerticalAlignment="Bottom" Margin="5,0,20,0"/>
 
-                <TextBox x:Name="txtMilliseconds" Width="70" Text="100" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <TextBox x:Name="txtMilliseconds" Width="70" Text="{Binding ClickInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
                 <Label Content="ms" VerticalAlignment="Bottom" Margin="5,0,20,0"/>
             </StackPanel>
         </GroupBox>
@@ -48,9 +49,9 @@
         <GroupBox Header="Cursor Position" Grid.Row="1" Margin="0,0,0,10">
             <StackPanel Orientation="Horizontal" Margin="10">
                 <RadioButton Content="Current Location" IsChecked="True" Margin="10,0,10,0"/>
-                <RadioButton Content="Pick Location" Margin="20,0,10,0"/>
-                <TextBox Width="50" Text="X" Margin="5,0,10,0" IsReadOnly="True" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
-                <TextBox Width="50" Text="Y" Margin="5,0,10,0" IsReadOnly="True" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <RadioButton Content="Pick Location" x:Name="rbPickLocation" Checked="PickLocation_Checked" Margin="20,0,10,0"/>
+                <TextBox x:Name="txtX" Width="50" Text="X" Margin="5,0,10,0" IsReadOnly="True" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                <TextBox x:Name="txtY" Width="50" Text="Y" Margin="5,0,10,0" IsReadOnly="True" Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
             </StackPanel>
         </GroupBox>
 

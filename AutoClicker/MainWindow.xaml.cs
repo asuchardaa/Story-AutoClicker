@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 
 namespace AutoClicker
@@ -11,7 +11,31 @@ namespace AutoClicker
     {
         private CancellationTokenSource leftClickCts;
         private CancellationTokenSource rightClickCts;
-        private int clickInterval = 100;
+        private int _clickInterval;
+        private bool isPickingLocation = false;
+        private int clickX, clickY;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public int ClickInterval 
+        {
+            get => _clickInterval;
+            set {
+                if (_clickInterval != value) 
+                { 
+                    _clickInterval = value;
+                    Properties.Settings.Default.clickInterval = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged(nameof(ClickInterval));
+                }
+            }
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool GetCursorPos(out POINT lpPoint);
+
+        [DllImport("user32.dll")]
+        private static extern bool SetCursorPos(int X, int Y);
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData, UIntPtr dwExtraInfo);
@@ -33,11 +57,48 @@ namespace AutoClicker
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+        }
+
         public MainWindow()
         {
             InitializeComponent();
             SourceInitialized += Window_SourceInitialized;
             Closing += Window_Closing;
+            DataContext = this;
+            ClickInterval = Properties.Settings.Default.clickInterval;
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void PickLocation_Checked(object sender, RoutedEventArgs e)
+        {
+            isPickingLocation = true;
+            this.MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
+            MessageBox.Show("Klikněte kamkoliv na obrazovce pro výběr souřadnic.");
+        }
+
+        private void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (isPickingLocation)
+            {
+                if (GetCursorPos(out POINT point))
+                {
+                    clickX = point.X;
+                    clickY = point.Y;
+                    txtX.Text = point.X.ToString();
+                    txtY.Text = point.Y.ToString();
+                }
+                isPickingLocation = false;
+                this.MouseLeftButtonDown -= MainWindow_MouseLeftButtonDown;
+            }
         }
 
         private void Window_SourceInitialized(object sender, EventArgs e)
@@ -99,7 +160,7 @@ namespace AutoClicker
 
         private void StartLeftClicker()
         {
-            clickInterval = GetInterval();
+            ClickInterval = GetInterval();
             if (leftClickCts != null) return;
             leftClickCts = new CancellationTokenSource();
             Task.Run(() => AutoClick(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP, leftClickCts.Token));
@@ -117,7 +178,7 @@ namespace AutoClicker
 
         private void StartRightClicker()
         {
-            clickInterval = GetInterval();
+            ClickInterval = GetInterval();
             if (rightClickCts != null) return;
             rightClickCts = new CancellationTokenSource();
             Task.Run(() => AutoClick(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP, rightClickCts.Token));
@@ -139,9 +200,12 @@ namespace AutoClicker
             {
                 while (!token.IsCancellationRequested)
                 {
+                    if (isPickingLocation == true) {
+                        SetCursorPos(clickX, clickY);
+                    }
                     mouse_event(downEvent, 0, 0, 0, UIntPtr.Zero);
                     mouse_event(upEvent, 0, 0, 0, UIntPtr.Zero);
-                    await Task.Delay(clickInterval, token);
+                    await Task.Delay(ClickInterval, token);
                 }
             }
             catch (TaskCanceledException) { }
