@@ -21,6 +21,7 @@ namespace AutoClicker
         private bool isSettingRightHotkey = false;
         private bool _useXButton1ForLeft = false;
         private bool _useXButton2ForRight = false;
+        private bool _useDoubleClick = false;
 
         // Hotkey tracking
         private KeyConverter keyConverter = new KeyConverter();
@@ -108,6 +109,21 @@ namespace AutoClicker
             }
         }
 
+        public bool UseDoubleClick
+        {
+            get => _useDoubleClick;
+            set
+            {
+                if (_useDoubleClick != value)
+                {
+                    _useDoubleClick = value;
+                    Properties.Settings.Default.useDoubleClick = value;
+                    Properties.Settings.Default.Save();
+                    OnPropertyChanged(nameof(UseDoubleClick));
+                }
+            }
+        }
+
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);
 
@@ -180,6 +196,7 @@ namespace AutoClicker
             // Load mouse button settings
             UseXButton1ForLeft = Properties.Settings.Default.useXButton1ForLeft;
             UseXButton2ForRight = Properties.Settings.Default.useXButton2ForRight;
+            UseDoubleClick = Properties.Settings.Default.useDoubleClick;
         }
 
         protected void OnPropertyChanged(string propertyName)
@@ -211,7 +228,6 @@ namespace AutoClicker
             }
         }
 
-
         private void Window_SourceInitialized(object sender, EventArgs e)
         {
             IntPtr hWnd = new WindowInteropHelper(this).Handle;
@@ -227,8 +243,6 @@ namespace AutoClicker
             // Register keyboard hotkeys
             RegisterHotKey(hWnd, leftHotkeyId, MOD_NOREPEAT, (uint)KeyInterop.VirtualKeyFromKey(LeftHotkeyKey));
             RegisterHotKey(hWnd, rightHotkeyId, MOD_NOREPEAT, (uint)KeyInterop.VirtualKeyFromKey(RightHotkeyKey));
-
-            // For mouse buttons, we just use the flag variables as they're handled in WndProc
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -429,11 +443,12 @@ namespace AutoClicker
             bool useFixedLocation = rbPickLocation.IsChecked == true;
             int x = clickX;
             int y = clickY;
+            bool doubleClick = UseDoubleClick;
 
             leftClickCts = new CancellationTokenSource();
-            Task.Run(() => AutoClick(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP, leftClickCts.Token, useFixedLocation, x, y));
+            Task.Run(() => AutoClick(MOUSEEVENTF_LEFTDOWN, MOUSEEVENTF_LEFTUP, leftClickCts.Token, useFixedLocation, x, y, doubleClick));
 
-            txtStatus.Text = "Status: Left clicking active";
+            txtStatus.Text = doubleClick ? "Status: Left double-clicking active" : "Status: Left clicking active";
         }
 
         private void StopLeftClicker()
@@ -456,11 +471,12 @@ namespace AutoClicker
             bool useFixedLocation = rbPickLocation.IsChecked == true;
             int x = clickX;
             int y = clickY;
+            bool doubleClick = UseDoubleClick;
 
             rightClickCts = new CancellationTokenSource();
-            Task.Run(() => AutoClick(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP, rightClickCts.Token, useFixedLocation, x, y));
+            Task.Run(() => AutoClick(MOUSEEVENTF_RIGHTDOWN, MOUSEEVENTF_RIGHTUP, rightClickCts.Token, useFixedLocation, x, y, doubleClick));
 
-            txtStatus.Text = "Status: Right clicking active";
+            txtStatus.Text = doubleClick ? "Status: Right double-clicking active" : "Status: Right clicking active";
         }
 
         private void StopRightClicker()
@@ -474,20 +490,32 @@ namespace AutoClicker
             }
         }
 
-        private async Task AutoClick(uint downEvent, uint upEvent, CancellationToken token, bool useFixedLocation, int x, int y)
+        private async Task AutoClick(uint downEvent, uint upEvent, CancellationToken token, bool useFixedLocation, int x, int y, bool doubleClick)
         {
             try
             {
                 while (!token.IsCancellationRequested)
                 {
-                    // Use the captured value instead of accessing UI control directly
                     if (useFixedLocation)
                     {
                         SetCursorPos(x, y);
                     }
 
+                    // Perform first click
                     mouse_event(downEvent, 0, 0, 0, UIntPtr.Zero);
                     mouse_event(upEvent, 0, 0, 0, UIntPtr.Zero);
+
+                    if (doubleClick)
+                    {
+                        // Small delay for double-click (typical system double-click time is ~500ms, using 100ms for speed)
+                        await Task.Delay(0, token);
+                        if (!token.IsCancellationRequested)
+                        {
+                            mouse_event(downEvent, 0, 0, 0, UIntPtr.Zero);
+                            mouse_event(upEvent, 0, 0, 0, UIntPtr.Zero);
+                        }
+                    }
+
                     await Task.Delay(ClickInterval, token);
                 }
             }

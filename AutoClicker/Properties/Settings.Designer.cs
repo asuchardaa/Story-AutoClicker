@@ -82,5 +82,17 @@ namespace AutoClicker.Properties {
                 this["useXButton2ForRight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool useDoubleClick {
+            get {
+                return ((bool)(this["useDoubleClick"]));
+            }
+            set {
+                this["useDoubleClick"] = value;
+            }
+        }
     }
 }
