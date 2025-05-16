@@ -34,5 +34,53 @@ namespace AutoClicker.Properties {
                 this["clickInterval"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int leftHotkeyKey {
+            get {
+                return ((int)(this["leftHotkeyKey"]));
+            }
+            set {
+                this["leftHotkeyKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int rightHotkeyKey {
+            get {
+                return ((int)(this["rightHotkeyKey"]));
+            }
+            set {
+                this["rightHotkeyKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool useXButton1ForLeft {
+            get {
+                return ((bool)(this["useXButton1ForLeft"]));
+            }
+            set {
+                this["useXButton1ForLeft"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool useXButton2ForRight {
+            get {
+                return ((bool)(this["useXButton2ForRight"]));
+            }
+            set {
+                this["useXButton2ForRight"] = value;
+            }
+        }
     }
 }

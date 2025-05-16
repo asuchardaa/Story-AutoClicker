@@ -13,13 +13,17 @@
         TextOptions.TextRenderingMode="Auto"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Storytelling Auto Clicker"
-        ResizeMode="NoResize"
-        Height="440"
+        ResizeMode="CanMinimize"
+        Height="480"
+        d:DesignHeight="480"
+        d:DesignWidth="500"
         Width="500"
         WindowStartupLocation="CenterScreen">
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -55,35 +59,35 @@
             </StackPanel>
         </GroupBox>
 
-        <!-- Buttons Section -->
-        <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,10,0,0">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
-                <Button Content="Start Left (F5)" x:Name="btnStartLeft"
-                        Width="180" Height="50"
-                        Margin="5"
-                        Style="{StaticResource MaterialDesignRaisedButton}" 
-                        Click="BtnStartLeft_Click"/>
+        <!-- Hotkey Configuration Section -->
+        <GroupBox Header="Hotkey Configuration" Grid.Row="2" Margin="0,0,0,10">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <Button Content="Stop Left (F5)" x:Name="btnStopLeft"
-                        Width="180" Height="50"
-                        Margin="5"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        Click="BtnStopLeft_Click"/>
-            </StackPanel>
+                <Label Content="Left Click Hotkey:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtLeftHotkey" Grid.Row="0" Grid.Column="1" Margin="5,0,5,0" 
+                         Text="F5" IsReadOnly="True" PreviewKeyDown="txtLeftHotkey_PreviewKeyDown" 
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <Button Content="Set" x:Name="btnSetLeftHotkey" Grid.Row="0" Grid.Column="2" 
+                        Click="btnSetLeftHotkey_Click" Width="60" Margin="5,0,0,0"/>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button Content="Start Right (F6)" x:Name="btnStartRight"
-                        Width="180" Height="50"
-                        Margin="5"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        Click="BtnStartRight_Click"/>
-
-                <Button Content="Stop Right (F6)" x:Name="btnStopRight"
-                        Width="180" Height="50"
-                        Margin="5"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        Click="BtnStopRight_Click"/>
-            </StackPanel>
-        </StackPanel>
+                <Label Content="Right Click Hotkey:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtRightHotkey" Grid.Row="1" Grid.Column="1" Margin="5,10,5,0" 
+                         Text="F6" IsReadOnly="True" PreviewKeyDown="txtRightHotkey_PreviewKeyDown" 
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                <Button Content="Set" x:Name="btnSetRightHotkey" Grid.Row="1" Grid.Column="2" 
+                        Click="btnSetRightHotkey_Click" Width="60" Margin="5,10,0,0"/>
+            </Grid>
+        </GroupBox>
+        <TextBlock Grid.Row="3" Margin="0" HorizontalAlignment="Center" 
+                   Text="Status: Ready" x:Name="txtStatus" FontWeight="Bold"/>
     </Grid>
 </Window>
